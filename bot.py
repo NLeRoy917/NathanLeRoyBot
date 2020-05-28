@@ -5,7 +5,6 @@ from lib.API import API
 # initialize objects
 utils = Utils()
 model_nathan = Model()
-model_hailey = Model()
 
 import logging
 import time
@@ -72,7 +71,7 @@ bot_hailey = API(api_hailey)
 
 # load and init model
 model_nathan.load_model(run_name='run1')
-model_hailey.load_model(run_name='run2')
+# model_hailey.load_model(run_name='run2')
 
 try:
     while True:
@@ -82,8 +81,8 @@ try:
         tweet_nathan = model_nathan.generate(length=length, temperature=TEMP)
         forbidden_nathan = utils.check_forbidden_words(tweet_nathan)
 
-        tweet_hailey = model_nathan.generate(length=length, temperature=TEMP)
-        forbidden_hailey = utils.check_forbidden_words(tweet_hailey)
+        # tweet_hailey = model_nathan.generate(length=length, temperature=TEMP)
+        # forbidden_hailey = utils.check_forbidden_words(tweet_hailey)
 
         while forbidden_nathan:
             logging.warn('Forbidden tweet found! \n{}\n'.format(tweet_nathan))
@@ -91,17 +90,16 @@ try:
             tweet_nathan = model_nathan.generate(length=length, temperature=TEMP)
             forbidden_nathan = utils.check_forbidden_words(tweet_nathan)
 
-        while forbidden_hailey:
-            logging.warn('Forbidden tweet found! \n{}\n'.format(tweet_hailey))
-            logging.warn('Regenerating tweet.')
-            tweet_nathan = model_hailey.generate(length=length, temperature=TEMP)
-            forbidden_hailey = utils.check_forbidden_words(tweet_hailey)
+        # while forbidden_hailey:
+        #     logging.warn('Forbidden tweet found! \n{}\n'.format(tweet_hailey))
+        #     logging.warn('Regenerating tweet.')
+        #     tweet_nathan = model_hailey.generate(length=length, temperature=TEMP)
+        #     forbidden_hailey = utils.check_forbidden_words(tweet_hailey)
         
-        logging.info('Checks passed. Posting tweets: \n{}\n \n{}\n'.format(tweet_nathan,tweet_hailey))
+        logging.info('Checks passed. Posting tweets: \n{}\n'.format(tweet_nathan))
 
         #print(tweet)
         bot_nathan.post_tweet(tweet_nathan)
-        bot_hailey.post_tweet(tweet_hailey)
 
         logging.info('Tweet posted. Sleeping for {} min'.format(SLEEP_TIME))
 
